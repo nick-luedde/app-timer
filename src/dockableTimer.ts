@@ -1,14 +1,17 @@
 import { reactive } from "vue";
 
-export const useDockableTimer = ({ onStop, }: DockableTimerOptions = {}) => {
-
-  const timing = reactive({
+export const useDockableTimer = () => {
+  const startingTiming: {
+    start: null | number,
+    status: 'stopped' | 'timing' | 'paused',
+    ms: number
+  } = {
     start: null,
     status: 'stopped',
     ms: 0
-  });
+  };
 
-  const onStopHandler = onStop || (() => {});
+  const timing = reactive(startingTiming);
 
   /**
    * Handle stopwatch/timing
@@ -16,7 +19,7 @@ export const useDockableTimer = ({ onStop, }: DockableTimerOptions = {}) => {
   const timer = () => {
     const animation = () => {
       if (timing.status === 'timing') {
-        timing.ms = Date.now() - timing.start;
+        timing.ms = Date.now() - (timing.start || 0);
         requestAnimationFrame(animation);
       }
     };
@@ -40,7 +43,7 @@ export const useDockableTimer = ({ onStop, }: DockableTimerOptions = {}) => {
       if (timing.status !== 'timing')
         return;
 
-      timing.ms = Date.now() - timing.start;
+      timing.ms = Date.now() - (timing.start || 0);
       timing.status = 'paused';
     };
 
@@ -50,9 +53,7 @@ export const useDockableTimer = ({ onStop, }: DockableTimerOptions = {}) => {
         return;
 
       if (timing.status === 'timing')
-        timing.ms = Date.now() - timing.start;
-
-      onStopHandler(timing.ms);
+        timing.ms = Date.now() - (timing.start || 0);
 
       reset();
     };
