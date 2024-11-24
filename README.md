@@ -1,51 +1,69 @@
-# dockable-timer
+# AppTimer
 
-This template should help get you started developing with Vue 3 in Vite.
+This Vue.js project includes a dock-able component and a stopwatch/timer overlay component. Used together, the resulting timer can be docked to any corner of the browser window.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-
-# DockableTimer
-
-This Vue.js component is a dockable stopwatch/timer overlay component. It can be docked to any corner of the browser window.
+The [AppTimer.vue](src/AppTimer.vue) and [DockableContainer.vue](src/DockableContainer.vue) component files can be dropped into any vuew SFC project.
 
 ## Using the component
 
 Here's a basic example of using the file:
 
 ```html
-<Dockable-Timer
-  :so-and-so="whatever"
->
-</Dockable-Timer>
+<template>
+
+  <DockableContainer 
+    v-model:position="timerPosition"
+    style="margin: .75rem;"
+    :dark="true"
+    @update:position="handleUpdateDockablePosition"
+  >
+    
+    <AppTimer 
+      title="Example timer in action!"
+      :expanded-style="{ 'max-width': '35vw', 'min-width': '304px' }"
+      :dark="true"
+      @title-click="handleTitleClick"
+      @start="handleStart"
+      @pause="handlePause"
+      @stop="handleStop"
+      @close="handleClose" 
+    />
+  
+  </DockableContainer>
+
+</template>
+
+<script setup lang="ts">
+import DockableContainer from './DockableContainer.vue';
+import AppTimer from './AppTimer.vue';
+import { ref } from 'vue';
+
+const timerPosition = ref('bottom-right');
+const handleUpdateDockablePosition = (pos: string) => {
+  //TODO: do something with the new position if needed
+};
+
+const handleTitleClick = () => {
+  //TODO: ...
+};
+
+const handleStart = () => {
+  //TODO: ...
+};
+
+const handlePause = ({ hr, min, sec, ms, totalms }: { hr: number, min: number, sec: number, ms: number, totalms: number }) => {
+  //TODO: ...
+};
+
+const handleStop = ({ hr, min, sec, ms, totalms }: { hr: number, min: number, sec: number, ms: number, totalms: number }) => {
+  //TODO: ...
+};
+
+const handleClose = () => {
+  //TODO: ...
+};
+
+</script>
 ```
 
-For a bit more in-depth look, [check out Example.ts](src/Example.ts)
+For a bit more in-depth look, [check out App.vue](src/App.vue)
