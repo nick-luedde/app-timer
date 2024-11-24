@@ -1,6 +1,6 @@
 # AppTimer
 
-This Vue.js project includes a dock-able component and a stopwatch/timer overlay component. Used together, the resulting timer can be docked to any corner of the browser window.
+This Vue.js project includes a dock-able component and a stopwatch/timer overlay component. Used together, the timer can be docked to any corner of the browser window.
 
 The [AppTimer.vue](src/AppTimer.vue) and [DockableContainer.vue](src/DockableContainer.vue) component files can be dropped into any vuew SFC project.
 
