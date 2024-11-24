@@ -1,13 +1,29 @@
 <template>
 
-  <main class="theme" :class="darkTheme ? 'dark-theme' : 'light-theme'" style="padding: 5rem; height: 100vh;">
+  <main class="theme"
+    :class="darkTheme ? 'dark-theme' : 'light-theme'"
+    style="padding: 5rem; height: 100vh;">
     <section
-      style="border: 1px solid gray; padding: 1.5rem; height: 100%; border-radius: 6px; box-shadow: 2px 2px 0 0;">
+      style="border: 1px solid gray; padding: 1.5rem; height: 100%; border-radius: 6px; box-shadow: 2px 2px 0 0; overflow-y: auto;">
       <div style="display: flex;">
         <h1 style="flex-grow: 1;">Example app for app timer</h1>
 
         <button style="background-color: var(--white); border: 1px solid transparent;"
-          :title="darkTheme ? 'Switch to light theme' : 'Switch to dark theme'" @click="toggleTheme">
+          title="Reset event list"
+          @click="reset">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            :fill="darkTheme ? '#ffffff' : '#000000'">
+            <path
+              d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126.5T260-672l57 57q-38 34-57.5 79T240-440q0 88 56 155.5T440-202v80Zm80 0v-80q87-16 143.5-83T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z" />
+          </svg>
+        </button>
+
+        <button style="background-color: var(--white); border: 1px solid transparent;"
+          :title="darkTheme ? 'Switch to light theme' : 'Switch to dark theme'"
+          @click="toggleTheme">
 
           <svg v-if="darkTheme"
             xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +48,7 @@
       </div>
       <hr style="margin-top: .75rem; margin-bottom: 1.25rem;">
 
-      <ul style="width: 100%; list-style: none;">
+      <ul style="width: 100%; list-style: none; word-break: break-all;">
         <li v-for="(evt, i) in events"
           :key="i">{{ i }} - {{ evt }}</li>
       </ul>
@@ -91,13 +107,14 @@ import { ref } from 'vue';
 import type { Ref } from 'vue';
 
 const events: Ref<string[]> = ref([]);
-const darkTheme = ref(false);
+const darkTheme = ref(true);
 
+const reset = () => events.value = [];
 const toggleTheme = () => darkTheme.value = !darkTheme.value;
 
 const timerPosition = ref('bottom-right');
 const handleUpdateDockablePosition = (pos: string) => {
-
+  //TODO...
 };
 
 const handleTitleClick = () => {

@@ -353,8 +353,7 @@
 </style>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, computed, nextTick } from "vue";
-import { useDockableTimer } from "./dockableTimer";
+import { defineProps, defineEmits, ref, computed, reactive, nextTick } from "vue";
 
 import type { Ref } from "vue";
 
@@ -375,7 +374,85 @@ const props = defineProps({
 
 const emit = defineEmits(['start', 'pause', 'stop', 'close', 'title-click']);
 
-const timer = useDockableTimer();
+const startingTiming: {
+  start: null | number,
+  status: 'stopped' | 'timing' | 'paused',
+  ms: number
+} = {
+  start: null,
+  status: 'stopped',
+  ms: 0
+};
+
+const timing = reactive(startingTiming);
+
+/**
+ * Handle stopwatch/timing
+ */
+const setupTimer = () => {
+  const animation = () => {
+    if (timing.status === 'timing') {
+      timing.ms = Date.now() - (timing.start || 0);
+      requestAnimationFrame(animation);
+    }
+  };
+
+  const reset = () => {
+    timing.start = null;
+    timing.status = 'stopped';
+    timing.ms = 0;
+  };
+
+  // start
+  const start = ({ withAnimation = true } = {}) => {
+    timing.start = Date.now() - timing.ms;
+    timing.status = 'timing';
+    if (withAnimation)
+      animation();
+  };
+
+  // pause
+  const pause = () => {
+    if (timing.status !== 'timing')
+      return;
+
+    timing.ms = Date.now() - (timing.start || 0);
+    timing.status = 'paused';
+  };
+
+  //stop and complete
+  const stop = () => {
+    if (timing.status === 'stopped')
+      return;
+
+    if (timing.status === 'timing')
+      timing.ms = Date.now() - (timing.start || 0);
+
+    reset();
+  };
+
+  /** TODO: not implemented */
+  const reminder = (fn: () => void, interval: number) => {
+    // HEY ITS BEEN A WHILE SINCE YOU STARTED YOUR TIMER
+    // or something like that
+
+    //setup for reminder fn that occurs on a given timing interval
+  };
+
+  return {
+    reset,
+    start,
+    pause,
+    stop,
+    animation,
+    reminder
+  };
+};
+
+const timer = {
+  timing,
+  timer: setupTimer(),
+};
 
 const collapseTimerActionEl: Ref<null | HTMLElement> = ref(null);
 const expandTimerActionEl: Ref<null | HTMLElement> = ref(null);
