@@ -1,9 +1,10 @@
 <template>
-  <section style="position: relative">
+  <section style="position: relative"
+    :class="dark ? 'dark-theme' : 'light-theme'">
     <!-- Collapsed timer -->
     <p v-show="showHelp"
-      class="box p-sm mb-sm font-sm"
-      style="position: absolute; top: -56px"
+      class="box p-sm font-sm"
+      style="position: absolute; top: -64px"
       role="alert">
       Press [e] to expand
     </p>
@@ -210,7 +211,26 @@
 </template>
 
 <style scoped>
-/* pt-4 pb-4 pr-2 pl-2 */
+.dark-theme {
+  --red: red;
+  --green: green;
+  --dark: whitesmoke;
+  --light: darkgray;
+  --white: black;
+}
+
+.light-theme {
+  --red: darkred;
+  --green: darkgreen;
+  --dark: #333333;
+  --light: lightgray;
+  --white: white;
+}
+
+.colors {
+  background-color: whitesmoke;
+}
+
 .time-block {
   padding-top: .75rem;
   padding-bottom: .75rem;
@@ -231,19 +251,19 @@
 }
 
 .text-red {
-  color: red;
+  color: var(--red);
 }
 
 .svg-red {
-  fill: red;
+  fill: var(--red);
 }
 
 .text-dark {
-  color: #333333;
+  color: var(--dark);
 }
 
 .svg-dark {
-  fill: #333333;
+  fill: var(--dark);
 }
 
 .text-bold {
@@ -251,8 +271,8 @@
 }
 
 .btn {
-  background-color: white;
-  border: 1px solid lightgrey;
+  background-color: var(--white);
+  border: 1px solid var(--light);
 }
 
 .btn-white {
@@ -260,7 +280,7 @@
 }
 
 .bg-white {
-  background-color: white;
+  background-color: var(--white);
 }
 
 .corners {
@@ -292,7 +312,7 @@
 }
 
 .light-border {
-  border: 1px solid lightgray;
+  border: 1px solid var(--light);
 }
 
 .flex {
@@ -350,6 +370,7 @@ const props = defineProps({
     default: () => ({})
   },
   disabled: Boolean,
+  dark: Boolean
 });
 
 const emit = defineEmits(['start', 'pause', 'stop', 'close', 'title-click']);

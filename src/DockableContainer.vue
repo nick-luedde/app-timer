@@ -1,5 +1,5 @@
 <template>
-  <aside style="position: fixed; z-index: 300"
+  <aside :class="dark ? 'dark-theme' : 'light-theme'" style="position: fixed; z-index: 300"
     :style="coords">
     <section class="p-lg dockable-container"
       ref="draggable"
@@ -53,6 +53,22 @@
 </template>
 
 <style scoped>
+.dark-theme {
+  --dark: whitesmoke;
+  --light: darkgray;
+  --white: black;
+  --on-light-font: black;
+  --focus-highlight: rgba(72, 95, 199, 0.25);
+}
+
+.light-theme {
+  --dark: #333333;
+  --light: lightgray;
+  --white: white;
+  --on-light-font: black;
+  --focus-highlight: rgba(72, 95, 199, 0.25);
+}
+
 .p-lg {
   padding: 3.5rem;
 }
@@ -66,11 +82,12 @@
 }
 
 .bg-light {
-  background-color: beige;
+  background-color: var(--light);
+  color: var(--on-light-font);
 }
 
 .dark-border {
-  border: 1px solid #333333;
+  border: 1px solid var(--dark);
 }
 
 .dockable-container {
@@ -86,11 +103,11 @@
 }
 
 .dockable-container:focus {
-  background-color: rgba(72, 95, 199, 0.25);
+  background-color: var(--focus-highlight);
 }
 
 .dockable-container:hover {
-  background-color: rgba(72, 95, 199, 0.25);
+  background-color: var(--focus-highlight);
 }
 </style>
 
@@ -106,7 +123,8 @@ const props = defineProps({
   position: {
     type: String,
     default: 'bottom-right'
-  }
+  },
+  dark: Boolean
 });
 
 const emit = defineEmits(["update:position"]);
